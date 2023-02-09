@@ -19,44 +19,55 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{secrets.TEMPLATES_GITHUB_TOKEN }}
-
-      - name: 'get diff and track changes'
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v29
+        # with:
+        #   sha: ${{ github.event.pull_request.head.sha }}
+        #   base_sha: ${{ github.event.pull_request.base.sha }}
+      - name: Test above
         run: |
-
-          curl -s https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
-
-          TRACKED_FILES=( .platform.app.yaml .platform/services.yaml .platform/applications.yaml )
-          MODIFIED_FILES=()
-          OPEN_TB_PR=0
-
-          # cat latest.diff
-
-          # DETECT CHANGES
-          for FILE in "${TRACKED_FILES[@]}"
-          do
-              if test -f "$FILE"; then
-                  echo "Checking $FILE"
-                  grep 'diff --git a/$FILE b/$FILE' latest.diff
-                  CHANGE=$(grep 'diff --git a/$FILE b/$FILE' latest.diff)
-                  if [ "$CHANGE" == "" ];then
-                      echo "$FILE is unchanged"
-                  else 
-                      echo "$FILE has been modified"
-                      OPEN_TB_PR=1
-                      MODIFIED_FILES+=($FILE)
-                  fi 
-              else
-                  echo "File $FILE not found"
-              fi
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo $file 
           done
-          echo "modified_files=$MODIFIED_FILES" >> $GITHUB_ENV
-          echo "sync_tb=$OPEN_TB_PR" >> $GITHUB_ENV
-      - name: 'apply changes'
-        run: | 
-          # APPLY CHANGES
-          if [[ "${{ env.sync_tb }}" -eq 1 ]]; then
-              echo "One of the tracked files has been changed."
-              echo "${{ env.modified_files }}"
-          else
-              echo "No revisisions detected. All is well.";
-          fi
+
+      # - name: 'get diff and track changes'
+      #   run: |
+
+      #     curl -s https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
+
+      #     TRACKED_FILES=( .platform.app.yaml .platform/services.yaml .platform/applications.yaml )
+      #     MODIFIED_FILES=()
+      #     OPEN_TB_PR=0
+
+      #     # cat latest.diff
+
+      #     # DETECT CHANGES
+      #     for FILE in "${TRACKED_FILES[@]}"
+      #     do
+      #         if test -f "$FILE"; then
+      #             echo "Checking $FILE"
+      #             grep 'diff --git a/$FILE b/$FILE' latest.diff
+      #             CHANGE=$(grep 'diff --git a/$FILE b/$FILE' latest.diff)
+      #             if [ "$CHANGE" == "" ];then
+      #                 echo "$FILE is unchanged"
+      #             else 
+      #                 echo "$FILE has been modified"
+      #                 OPEN_TB_PR=1
+      #                 MODIFIED_FILES+=($FILE)
+      #             fi 
+      #         else
+      #             echo "File $FILE not found"
+      #         fi
+      #     done
+      #     echo "modified_files=$MODIFIED_FILES" >> $GITHUB_ENV
+      #     echo "sync_tb=$OPEN_TB_PR" >> $GITHUB_ENV
+      # - name: 'apply changes'
+      #   run: | 
+      #     # APPLY CHANGES
+      #     if [[ "${{ env.sync_tb }}" -eq 1 ]]; then
+      #         echo "One of the tracked files has been changed."
+      #         echo "${{ env.modified_files }}"
+      #     else
+      #         echo "No revisisions detected. All is well.";
+      #     fi
