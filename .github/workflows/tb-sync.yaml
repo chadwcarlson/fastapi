@@ -44,7 +44,7 @@ jobs:
 
               # Clone template-builder, and create a new branch that matches changes in template repo.
               echo "Cloning template-builder"
-              git clone git@github.com:platformsh/template-builder.git
+              git clone https://github.com/platformsh/template-builder.git
               cd template-builder
               git checkout -b $SYNC_BRANCH
 
