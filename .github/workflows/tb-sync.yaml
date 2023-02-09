@@ -34,8 +34,8 @@ jobs:
       - name: 'set git config'
         shell: bash
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+          git config --global user.email "devrel@internal.platform.sh"
+          git config --global user.name "platformsh-devrel"
       - name: Test above
         run: |
           if [ "${{ steps.changed-files.outputs.all_changed_files }}" == "" ];then
