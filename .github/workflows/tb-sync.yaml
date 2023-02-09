@@ -21,6 +21,7 @@ jobs:
           token: ${{secrets.TEMPLATES_GITHUB_TOKEN }}
       - name: 'test vars'
         run: |
-          echo $GITHUB_REF
+          echo $GITHUB_SHA
           echo $GITHUB_REPOSITORY
-          curl https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_REF.diff > latest.diff
+          curl https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
+          cat latest.diff
