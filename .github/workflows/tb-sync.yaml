@@ -29,11 +29,14 @@ jobs:
           MODIFIED_FILES=()
           OPEN_TB_PR=0
 
+          cat latest.diff
+
           # DETECT CHANGES
           for FILE in "${TRACKED_FILES[@]}"
           do
               if test -f "$FILE"; then
                   echo "Checking $FILE"
+                  grep 'diff --git a/$FILE b/$FILE' latest.diff
                   CHANGE=$(grep 'diff --git a/$FILE b/$FILE' latest.diff)
                   if [ "$CHANGE" == "" ];then
                       echo "$FILE is unchanged"
