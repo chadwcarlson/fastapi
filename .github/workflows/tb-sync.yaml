@@ -39,11 +39,13 @@ jobs:
               SYNC_BRANCH=sync-$TEMPLATE
 
               # Clone template-builder, and create a new branch that matches changes in template repo.
+              echo "Cloning template-builder"
               git clone git@github.com:platformsh/template-builder.git
               cd template-builder
               git checkout -b $SYNC_BRANCH
 
               # Copy and stage the changed files
+              echo "Syncing revisions into template-builder"
               for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
                 echo "Syncing $file"
                 cp ../$file templates/$TEMPLATE/files
@@ -51,6 +53,7 @@ jobs:
               done
 
               # Commit and push to template-builder.
+              echo "Commit and push"
               git commit -m "Synching $GITHUB_REPOSITORY ($GITHUB_SHA)"
               git push origin $SYNC_BRANCH
 
