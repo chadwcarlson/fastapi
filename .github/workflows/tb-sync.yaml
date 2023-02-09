@@ -19,11 +19,37 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{secrets.TEMPLATES_GITHUB_TOKEN }}
-      - name: 'test vars'
+      - name: 'get diff'
         run: |
-          echo $GITHUB_SHA
-          echo $GITHUB_REF_NAME
-          echo $GITHUB_REF
-          echo $GITHUB_REPOSITORY
           curl https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
-          cat latest.diff
+      - name: 'track changes'
+        run: |
+          TRACKED_FILES=( .platform.app.yaml .platform/services.yaml .platform/applications.yaml )
+          MODIFIED_FILES=()
+          OPEN_TB_PR=0
+
+          # DETECT CHANGES
+          for FILE in "${TRACKED_FILES[@]}"
+          do
+              if test -f "$FILE"; then
+                  CHANGE=$(grep 'diff --git a/$FILE b/$FILE' latest.diff)
+                  if [ "$CHANGE" == "" ];then
+                      echo "$FILE is unchanged"
+                  else 
+                      echo "$FILE has been modified"
+                      OPEN_TB_PR=1
+                      MODIFIED_FILES+=($FILE)
+                  fi 
+              else
+                  echo "File $FILE not found"
+              fi
+          done
+      - name: 'apply changes'
+        run: | 
+          # APPLY CHANGES
+          echo $OPEN_TB_PR
+          if [ "$OPEN_TB_PR" -eq 1 ]; then
+              echo "One of the tracked files has been changed."
+          else
+              echo "No revisisions detected. All is well.";
+          fi
