@@ -42,39 +42,39 @@ jobs:
       #   run: |
       #     git config --global user.email "devrel@internal.platform.sh"
       #     git config --global user.name "platformsh-devrel"
-      # - name: Test above
-      #   run: |
-      #     if [ "${{ steps.changed-files.outputs.all_changed_files }}" == "" ];then
-      #         echo "No relevant files modified. All is well."
-      #     else 
+      - name: Test above
+        run: |
+          if [ "${{ steps.changed-files.outputs.all_changed_files }}" == "" ];then
+              echo "No relevant files modified. All is well."
+          else 
 
-      #         # Get current template name.
-      #         arrIN=(${GITHUB_REPOSITORY//\// })
-      #         TEMPLATE=${arrIN[1]}   
-      #         SYNC_BRANCH=sync-$TEMPLATE
+              # Get current template name.
+              arrIN=(${GITHUB_REPOSITORY//\// })
+              TEMPLATE=${arrIN[1]}   
+              SYNC_BRANCH=sync-$TEMPLATE
 
-      #         # Clone template-builder, and create a new branch that matches changes in template repo.
-      #         echo "Cloning template-builder"
-      #         git clone git@github.com:platformsh/template-builder.git
-      #         cd template-builder
-      #         git checkout -b $SYNC_BRANCH
+              # Clone template-builder, and create a new branch that matches changes in template repo.
+              # echo "Cloning template-builder"
+              # git clone git@github.com:platformsh/template-builder.git
+              cd template-builder
+              git checkout -b $SYNC_BRANCH
 
-      #         # Copy and stage the changed files
-      #         echo "Syncing revisions into template-builder"
-      #         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-      #           echo "Syncing $file"
-      #           cp ../$file templates/$TEMPLATE/files
-      #           git add templates/$TEMPLATE/files/$file
-      #         done
+              # Copy and stage the changed files
+              echo "Syncing revisions into template-builder"
+              for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+                echo "Syncing $file"
+                cp ../$file templates/$TEMPLATE/files
+                git add templates/$TEMPLATE/files/$file
+              done
 
-      #         # Commit and push to template-builder.
-      #         echo "Commit and push"
-      #         git commit -m "Synching $GITHUB_REPOSITORY ($GITHUB_SHA)"
-      #         git push origin $SYNC_BRANCH
+              # Commit and push to template-builder.
+              echo "Commit and push"
+              git commit -m "Synching $GITHUB_REPOSITORY ($GITHUB_SHA)"
+              git push origin $SYNC_BRANCH
 
-      #         # Create the corresponding PR.
-      #         # gh pr create \
-      #         #   --head $SYNC_BRANCH \
-      #         #   --title "Sync: matching $GITHUB_REPOSITORY#$PR_NUMBER" \
-      #         #   --body "Syncing updates made in to https://github.com/platformsh-templates/$TEMPLATE/pull/$PR_NUMBER"
-      #     fi 
+              # Create the corresponding PR.
+              # gh pr create \
+              #   --head $SYNC_BRANCH \
+              #   --title "Sync: matching $GITHUB_REPOSITORY#$PR_NUMBER" \
+              #   --body "Syncing updates made in to https://github.com/platformsh-templates/$TEMPLATE/pull/$PR_NUMBER"
+          fi 
