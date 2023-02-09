@@ -46,7 +46,7 @@ jobs:
               fi
           done
           echo "sync-tb=${$OPEN_TB_PR}" >> $GITHUB_OUTPUT
-          echo "export $MODIFIED_FILES" >> $GITHUB_ENV
+          # echo "export $MODIFIED_FILES" >> $GITHUB_ENV
       - name: 'apply changes'
         if: ${{ steps.changes-made.sync-tb }} == 1
         run: | 
