@@ -7,7 +7,7 @@
 name: fastapi
 
 # The runtime the application uses.
-type: "python:3.11"
+type: "python:3.10"
 
 # The build-time dependencies of the app.
 dependencies:

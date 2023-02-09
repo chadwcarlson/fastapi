@@ -31,6 +31,11 @@ jobs:
         id: setup-gh-token
         shell: bash
         run: echo "GITHUB_TOKEN=$GH_TOKEN" >> $GITHUB_ENV
+      - name: 'set git config'
+        shell: bash
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
       - name: Test above
         run: |
           if [ "${{ steps.changed-files.outputs.all_changed_files }}" == "" ];then
