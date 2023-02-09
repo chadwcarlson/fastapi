@@ -27,6 +27,10 @@ jobs:
             .platform.app.yaml
             .platform/services.yaml
             .platform/applications.yaml
+      - name: 'Set up Github token'
+        id: setup-gh-token
+        shell: bash
+        run: echo "GITHUB_TOKEN=$GH_TOKEN" >> $GITHUB_ENV
       - name: Test above
         run: |
           if [ "${{ steps.changed-files.outputs.all_changed_files }}" == "" ];then
