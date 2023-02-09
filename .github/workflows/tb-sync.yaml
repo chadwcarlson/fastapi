@@ -23,7 +23,6 @@ jobs:
         run: |
           curl https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
       - name: 'track changes'
-        id: changes-made
         run: |
           TRACKED_FILES=( .platform.app.yaml .platform/services.yaml .platform/applications.yaml )
           MODIFIED_FILES=()
@@ -51,7 +50,7 @@ jobs:
       - name: 'apply changes'
         run: | 
           # APPLY CHANGES
-          if [ "$${{ env.sync_tb }}" -eq 1 ]; then
+          if [[ "${{ env.sync_tb }}" -eq 1 ]]; then
               echo "One of the tracked files has been changed."
               echo "${{ env.modified_files }}"
           else
