@@ -7,7 +7,7 @@
 name: fastapi_change_name
 
 # The runtime the application uses.
-type: "python:3.10"
+type: "python:3.11"
 
 # The build-time dependencies of the app.
 dependencies:
