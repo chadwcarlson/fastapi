@@ -23,13 +23,11 @@ jobs:
       - name: 'get diff and track changes'
         run: |
 
-          curl https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
+          curl -s https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
 
           TRACKED_FILES=( .platform.app.yaml .platform/services.yaml .platform/applications.yaml )
           MODIFIED_FILES=()
           OPEN_TB_PR=0
-
-          
 
           # DETECT CHANGES
           for FILE in "${TRACKED_FILES[@]}"
