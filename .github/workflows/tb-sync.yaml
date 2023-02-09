@@ -29,7 +29,7 @@ jobs:
           MODIFIED_FILES=()
           OPEN_TB_PR=0
 
-          cat latest.diff
+          # cat latest.diff
 
           # DETECT CHANGES
           for FILE in "${TRACKED_FILES[@]}"
