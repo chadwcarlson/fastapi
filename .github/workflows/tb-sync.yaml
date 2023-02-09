@@ -23,6 +23,7 @@ jobs:
         run: |
           curl https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
       - name: 'track changes'
+        id: changes-made
         run: |
           TRACKED_FILES=( .platform.app.yaml .platform/services.yaml .platform/applications.yaml )
           MODIFIED_FILES=()
@@ -44,12 +45,15 @@ jobs:
                   echo "File $FILE not found"
               fi
           done
+          echo "sync-tb=${$OPEN_TB_PR}" >> $GITHUB_OUTPUT
+          echo "export $MODIFIED_FILES" >> $GITHUB_ENV
       - name: 'apply changes'
+        if: ${{ steps.changes-made.sync-tb }} == 1
         run: | 
           # APPLY CHANGES
-          echo $OPEN_TB_PR
-          if [ "$OPEN_TB_PR" -eq 1 ]; then
-              echo "One of the tracked files has been changed."
-          else
-              echo "No revisisions detected. All is well.";
-          fi
+          echo $MODIFIED_FILES
+          # if [ "$OPEN_TB_PR" -eq 1 ]; then
+          #     echo "One of the tracked files has been changed."
+          # else
+          #     echo "No revisisions detected. All is well.";
+          # fi
