@@ -8,7 +8,6 @@ on:
 env:
   DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
   GH_TOKEN: ${{ secrets.TEMPLATES_GITHUB_TOKEN }}
-  PR_NUMBER: ${{ github.event.number }}
 jobs:
   sync-diffs-with-template-builder:
     name: "Track updated files"
@@ -25,6 +24,7 @@ jobs:
         with:
           files: |
             .platform.app.yaml
+            .platform/routes.yaml
             .platform/services.yaml
             .platform/applications.yaml
       - name: 'Set up Github token'
@@ -75,8 +75,7 @@ jobs:
               # Create the corresponding PR.
               gh pr create \
                 --head $SYNC_BRANCH \
-                --title "Sync: matching $GITHUB_REPOSITORY#$PR_NUMBER" \
-                --body "Syncing updates made in to https://github.com/$GITHUB_REPOSITORY/commits/$GITHUB_SHA"
+                --title "Sync: matching $GITHUB_REPOSITORY" \
+                --body "Syncing updates made in the latest [pull request](https://github.com/$GITHUB_REPOSITORY/commits/$GITHUB_SHA)."
 
-              echo $PR_NUMBER
           fi 
