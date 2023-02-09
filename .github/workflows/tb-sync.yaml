@@ -37,11 +37,11 @@ jobs:
             token: ${{ secrets.TEMPLATES_GITHUB_TOKEN }}
             repository: platformsh/template-builder
             path: template-builder
-      # - name: 'set git config'
-      #   shell: bash
-      #   run: |
-      #     git config --global user.email "devrel@internal.platform.sh"
-      #     git config --global user.name "platformsh-devrel"
+      - name: 'set git config'
+        shell: bash
+        run: |
+          git config --global user.email "devrel@internal.platform.sh"
+          git config --global user.name "platformsh-devrel"
       - name: Test above
         run: |
           if [ "${{ steps.changed-files.outputs.all_changed_files }}" == "" ];then
