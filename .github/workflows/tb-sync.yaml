@@ -73,8 +73,8 @@ jobs:
               git push origin $SYNC_BRANCH
 
               # Create the corresponding PR.
-              # gh pr create \
-              #   --head $SYNC_BRANCH \
-              #   --title "Sync: matching $GITHUB_REPOSITORY#$PR_NUMBER" \
-              #   --body "Syncing updates made in to https://github.com/platformsh-templates/$TEMPLATE/pull/$PR_NUMBER"
+              gh pr create \
+                --head $SYNC_BRANCH \
+                --title "Sync: matching $GITHUB_REPOSITORY#$PR_NUMBER" \
+                --body "Syncing updates made in to https://github.com/platformsh-templates/$TEMPLATE/pull/$PR_NUMBER"
           fi 
