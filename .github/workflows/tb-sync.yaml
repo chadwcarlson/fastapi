@@ -49,7 +49,7 @@ jobs:
 
               # Clone template-builder, and create a new branch that matches changes in template repo.
               echo "Cloning template-builder"
-              git clone https://github.com/platformsh/template-builder.git
+              git clone git@github.com:platformsh/template-builder.git
               cd template-builder
               git checkout -b $SYNC_BRANCH
 
@@ -72,45 +72,3 @@ jobs:
               #   --title "Sync: matching $GITHUB_REPOSITORY#$PR_NUMBER" \
               #   --body "Syncing updates made in to https://github.com/platformsh-templates/$TEMPLATE/pull/$PR_NUMBER"
           fi 
-
-
-      # - name: 'get diff and track changes'
-      #   run: |
-
-      #     curl -s https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA.diff > latest.diff
-
-      #     TRACKED_FILES=( .platform.app.yaml .platform/services.yaml .platform/applications.yaml )
-      #     MODIFIED_FILES=()
-      #     OPEN_TB_PR=0
-
-      #     # cat latest.diff
-
-      #     # DETECT CHANGES
-      #     for FILE in "${TRACKED_FILES[@]}"
-      #     do
-      #         if test -f "$FILE"; then
-      #             echo "Checking $FILE"
-      #             grep 'diff --git a/$FILE b/$FILE' latest.diff
-      #             CHANGE=$(grep 'diff --git a/$FILE b/$FILE' latest.diff)
-      #             if [ "$CHANGE" == "" ];then
-      #                 echo "$FILE is unchanged"
-      #             else 
-      #                 echo "$FILE has been modified"
-      #                 OPEN_TB_PR=1
-      #                 MODIFIED_FILES+=($FILE)
-      #             fi 
-      #         else
-      #             echo "File $FILE not found"
-      #         fi
-      #     done
-      #     echo "modified_files=$MODIFIED_FILES" >> $GITHUB_ENV
-      #     echo "sync_tb=$OPEN_TB_PR" >> $GITHUB_ENV
-      # - name: 'apply changes'
-      #   run: | 
-      #     # APPLY CHANGES
-      #     if [[ "${{ env.sync_tb }}" -eq 1 ]]; then
-      #         echo "One of the tracked files has been changed."
-      #         echo "${{ env.modified_files }}"
-      #     else
-      #         echo "No revisisions detected. All is well.";
-      #     fi
