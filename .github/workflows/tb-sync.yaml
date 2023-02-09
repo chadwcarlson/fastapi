@@ -27,13 +27,16 @@ jobs:
             .platform.app.yaml
             .platform/services.yaml
             .platform/applications.yaml
-        #   sha: ${{ github.event.pull_request.head.sha }}
-        #   base_sha: ${{ github.event.pull_request.base.sha }}
       - name: Test above
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo $file 
-          done
+          if [ "$${{ steps.changed-files.outputs.all_changed_files }}" == "" ];then
+              echo "No relevant files modified. All is well."
+          else 
+              for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+                echo $file 
+              done
+          fi 
+
 
       # - name: 'get diff and track changes'
       #   run: |
