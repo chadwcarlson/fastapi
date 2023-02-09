@@ -1,3 +1,3 @@
 https://{default}/:
   type: upstream
-  upstream: "app_name_has_changed:http"
+  upstream: "app_name_has_changed_again:http"
