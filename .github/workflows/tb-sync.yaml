@@ -64,18 +64,20 @@ jobs:
               for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
                 echo "Syncing $file"
                 cp ../$file templates/$TEMPLATE/files
-                git add templates/$TEMPLATE/files/$file
+                # git add templates/$TEMPLATE/files/$file
               done
 
               # Commit and push to template-builder.
               echo "Commit and push"
+              git add .
               git commit -m "Synching $GITHUB_REPOSITORY ($GITHUB_SHA)"
-              git push origin $SYNC_BRANCH
+              git status
+              # git push origin $SYNC_BRANCH
 
-              # Create the corresponding PR.
-              gh pr create \
-                --head $SYNC_BRANCH \
-                --title "Sync: matching $GITHUB_REPOSITORY" \
-                --body "Syncing updates made in the latest [pull request](https://github.com/$GITHUB_REPOSITORY/commits/$GITHUB_SHA)."
+              # # Create the corresponding PR.
+              # gh pr create \
+              #   --head $SYNC_BRANCH \
+              #   --title "Sync: matching $GITHUB_REPOSITORY" \
+              #   --body "Syncing updates made in the latest [pull request](https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)."
 
           fi 
