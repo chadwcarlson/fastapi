@@ -1,4 +1,4 @@
-name: Update last.updated
+name: Track and sync tracked files
 on:
   push:
     branches:
@@ -16,7 +16,11 @@ jobs:
     if: ${{ github.repository_owner == 'chadwcarlson' && github.event.commits[0].author.name != 'GitHub Action' }}
     steps:
       - name: 'get repo'
-        id: prepautopr
         uses: actions/checkout@v3
         with:
           token: ${{secrets.TEMPLATES_GITHUB_TOKEN }}
+      - name: 'test vars'
+        run: |
+          echo $GITHUB_REF
+          echo $GITHUB_REPOSITORY
+          curl https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_REF.diff > latest.diff
